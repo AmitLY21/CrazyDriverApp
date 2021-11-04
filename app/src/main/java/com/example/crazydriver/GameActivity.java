@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView lblScore;
     private int score = 0;
 
-    int delay = 1000; // 1000 milliseconds == 1 second
+    int delay = 500; // 1000 milliseconds == 1 second
     private int clockCounter = 0;
     final Handler handler = new Handler();
 
@@ -50,7 +50,7 @@ public class GameActivity extends AppCompatActivity {
             handler.postDelayed(this, delay); //tick
             checkCollision();
             moveObstacles();
-            if (clockCounter % 3 == 0) {
+            if (clockCounter % 2 == 0) {
                 generateObstacle();
             }
             if (player.getLives() == -1) {
@@ -59,8 +59,8 @@ public class GameActivity extends AppCompatActivity {
             }
             clockCounter++;
 
-            if (clockCounter % 30 == 0 && delay > 500) { //Every 30 ticks the speed increase
-                delay -= 100;
+            if (clockCounter % 30 == 0 && delay > 450) { //Every 30 ticks the speed increase
+                delay -= 40;
                 Toast.makeText(GameActivity.this, "Speed Increased", Toast.LENGTH_SHORT).show();
             }
         }
@@ -150,11 +150,14 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < values[5].length; i++) {
             if (values[5][i] == 5 && values[4][i] == 3) { //HIT Wrench (extra life)
                 addLive();
+                MediaPlayer wrenchSound = MediaPlayer.create(GameActivity.this, R.raw.wrench_sound);
+                wrenchSound.start();
                 removeObstacles(true);
                 break;
             }
             if (values[5][i] == 5 && values[4][i] == 4) { //HIT coin (score+1)
                 removeObstacles(false);
+                Toast.makeText(this, "+1 Score", Toast.LENGTH_SHORT).show();
                 MediaPlayer coinCollectSound = MediaPlayer.create(GameActivity.this, R.raw.coin_collect);
                 coinCollectSound.start();
                 break;
@@ -170,8 +173,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void updateScore() {
-        score++;
+    private void updateScore(int points) {
+        score+=points;
         lblScore.setText("" + score);
     }
 
@@ -194,8 +197,11 @@ public class GameActivity extends AppCompatActivity {
     private void addLive() {
         if (player.getLives() < 2) {
             player.setLives(player.getLives() + 1);
-            Toast.makeText(this, "+1 Heart", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "+1 Heart & +5 Score", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "+5 Score", Toast.LENGTH_SHORT).show();
         }
+        updateScore(5);
         hearts.get(player.getLives()).setVisibility(View.VISIBLE);
 
     }
@@ -219,7 +225,7 @@ public class GameActivity extends AppCompatActivity {
             values[4][i] = 0;
         }
         if (!isCollided) {
-            updateScore();
+            updateScore(1);
         }
         updateUI();
     }
@@ -228,7 +234,7 @@ public class GameActivity extends AppCompatActivity {
         int colNum = columnRand.nextInt(3);
         if (clockCounter % 10 == 0) {// every 10 ticks generate wrench (+1 heart)
             values[0][colNum] = 3;
-        } else if (clockCounter % 5 == 0) { // every 5 ticks generate coin
+        } else if (clockCounter % 3 == 0) { // every 5 ticks generate coin
             values[0][colNum] = 4;
         } else {
             values[0][colNum] = obstacleRand.nextInt(2) + 1;
