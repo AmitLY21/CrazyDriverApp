@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.GameMenuActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/start_game"></ImageView>
+
+    <LinearLayout
+        android:id="@+id/panel_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/panel_Collect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+
+            >
+
+            <TextView
+                android:id="@+id/panel_LBL_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/ferrari"
+                android:text="Collect: "
+                android:textSize="40sp"></TextView>
+
+            <ImageView
+                android:id="@+id/panel_IMG_coin_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@id/panel_LBL_collect"
+                android:src="@drawable/coin"></ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+
+                android:layout_toEndOf="@id/panel_IMG_coin_collect"
+                android:src="@drawable/img_wrench"></ImageView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/panel_LBL_avoid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="20dp"
+                android:fontFamily="@font/ferrari"
+                android:text="Avoid: "
+                android:textSize="40sp"></TextView>
+
+            <ImageView
+                android:id="@+id/panel_IMG_hole_avoid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="42dp"
+                android:layout_toEndOf="@id/panel_LBL_avoid"
+                android:src="@drawable/img_hole"></ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@id/panel_IMG_coin_collect"
+                android:src="@drawable/img_barrier"></ImageView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/panel_choose_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/panel_info"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/ferrari"
+        android:text="Choose a Car:"
+        android:textSize="40sp">
+
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/panel_choose_car"
+        android:layout_marginBottom="220dp"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/car"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/car">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/car1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/car1">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/race_car"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/race_car">
+
+        </ImageButton>
+
+    </LinearLayout>
+</RelativeLayout>

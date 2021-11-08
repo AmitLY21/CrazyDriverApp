@@ -23,6 +23,7 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
 
     private Player player;
+    private int car_id;
 
     private ImageView[][] gamePanel;
     private int[][] values;
@@ -81,6 +82,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle extras = getIntent().getExtras();
+        car_id = extras.getInt("carImage");
+
         findViews();
         gamePanelReset();
 
@@ -105,6 +109,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
+
     //---------Movement---------
     private void moveLeft() {
         if (player.getCurrentPosition() - 1 >= 0) {
@@ -192,7 +197,7 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case 5:
                         im.setVisibility(View.VISIBLE);
-                        im.setImageResource(R.drawable.car);
+                        im.setImageResource(car_id);
                         break;
                 }
             }

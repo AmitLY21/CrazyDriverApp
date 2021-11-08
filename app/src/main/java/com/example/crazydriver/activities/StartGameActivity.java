@@ -23,7 +23,7 @@ public class StartGameActivity extends AppCompatActivity {
         btnStartGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(StartGameActivity.this,GameActivity.class));
+                startActivity(new Intent(StartGameActivity.this,GameMenuActivity.class));
 
             }
         });
