@@ -6,7 +6,7 @@ public class Player {
 
     public Player() {
         this.lives = 2;
-        this.currentPosition = 1;
+        this.currentPosition = 2;
     }
 
     public int getCurrentPosition() {

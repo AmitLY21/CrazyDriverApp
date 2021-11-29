@@ -80,61 +80,97 @@
                 android:layout_marginLeft="20dp"
                 android:layout_toEndOf="@id/panel_IMG_coin_collect"
                 android:src="@drawable/img_barrier"></ImageView>
-
         </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/panel_choose_car"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/panel_choose_game_mode"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/panel_info"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="20dp"
-        android:fontFamily="@font/ferrari"
-        android:text="Choose a Car:"
-        android:textSize="40sp">
-
-    </TextView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/panel_choose_car"
-        android:layout_marginBottom="220dp"
         android:orientation="horizontal">
 
-
-        <ImageButton
-            android:id="@+id/car"
+        <ToggleButton
+            android:id="@+id/toggleButton_buttons"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/car">
+            android:layout_margin="20dp"
+            android:text="Buttons"
+            android:fontFamily="@font/ferrari"
+            android:textOff="No Buttons"
+            android:textOn="Buttons" />
 
-        </ImageButton>
-
-        <ImageButton
-            android:id="@+id/car1"
+        <ToggleButton
+            android:id="@+id/toggleButton_sensor"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/car1">
+            android:layout_margin="20dp"
+            android:text="Sensors"
+            android:fontFamily="@font/ferrari"
+            android:textOff="No Sensors"
+            android:textOn="Sensors"
+            />
 
-        </ImageButton>
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/race_car"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/race_car">
 
-        </ImageButton>
+    <LinearLayout
+        android:id="@id/panel_choose_car"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/panel_choose_game_mode"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/panel_choose_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/ferrari"
+            android:text="Choose a Car:"
+            android:textSize="40sp">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal">
+
+
+            <ImageButton
+                android:id="@+id/car"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/car">
+
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/car1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/car1">
+
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/race_car"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/race_car">
+
+            </ImageButton>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

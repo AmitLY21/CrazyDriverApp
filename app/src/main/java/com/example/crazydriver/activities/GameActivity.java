@@ -24,10 +24,11 @@ public class GameActivity extends AppCompatActivity {
 
     private Player player;
     private int car_id;
+    private int gameMode;
 
     private ImageView[][] gamePanel;
     private int[][] values;
-
+    private int carRow = 0;
     private ImageButton btnLeft;
     private ImageButton btnRight;
 
@@ -84,9 +85,11 @@ public class GameActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         car_id = extras.getInt("carImage");
+        gameMode = extras.getInt("gameMode");
 
-        findViews();
+        findViews(gameMode);
         gamePanelReset();
+        carRow =  values.length -1;
 
         player = new Player();
 
@@ -122,7 +125,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void moveRight() {
-        if (player.getCurrentPosition() + 1 < 3) {
+        if (player.getCurrentPosition() + 1 < values[carRow].length) {
             int lastPosition = player.getCurrentPosition();
             player.setCurrentPosition(player.getCurrentPosition() + 1);
             int newPosition = player.getCurrentPosition();
@@ -146,8 +149,8 @@ public class GameActivity extends AppCompatActivity {
 
     //---------Switch Methods---------
     private void switchPlayerPosition(int lastPosition, int newPosition) {
-        values[5][lastPosition] = 0; //set empty cell
-        values[5][newPosition] = 5; //set car
+        values[carRow][lastPosition] = 0; //set empty cell
+        values[carRow][newPosition] = 5; //set car
         updateUI();
     }
 
@@ -155,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(GameActivity.this, GameOverActivity.class);
         //Passing the score value to the game over activity
         switchActivityIntent.putExtra("finalScore", String.valueOf(score));
+        finish();
         startActivity(switchActivityIntent);
     }
 
@@ -215,26 +219,26 @@ public class GameActivity extends AppCompatActivity {
      * 5 - car
      */
     private void checkCollision() {
-        for (int i = 0; i < values[5].length; i++) {
-            if (values[5][i] == 5 && values[4][i] == 3) { //HIT Wrench (extra life)
+        for (int i = 0; i < values[carRow].length; i++) {
+            if (values[carRow][i] == 5 && values[carRow-1][i] == 3) { //HIT Wrench (extra life)
                 addLive();
                 wrenchSound = MediaPlayer.create(GameActivity.this, R.raw.wrench_sound);
                 wrenchSound.start();
                 removeObstacles(true);
                 break;
             }
-            if (values[5][i] == 5 && values[4][i] == 4) { //HIT coin (score+1)
+            if (values[carRow][i] == 5 && values[carRow-1][i] == 4) { //HIT coin (score+1)
                 removeObstacles(false);
                 Toast.makeText(this, "+1 Score", Toast.LENGTH_SHORT).show();
                 coinCollectSound = MediaPlayer.create(GameActivity.this, R.raw.coin_collect);
                 coinCollectSound.start();
                 break;
             }
-            if (values[5][i] == 5 && values[4][i] == 1) { //HIT Obstacle hole
+            if (values[carRow][i] == 5 && values[carRow-1][i] == 1) { //HIT Obstacle hole
                 collisionActions(true);
                 break;
             }
-            if (values[5][i] == 5 && values[4][i] == 2) { //HIT Obstacle barrier
+            if (values[carRow][i] == 5 && values[carRow-1][i] == 2) { //HIT Obstacle barrier
                 collisionActions(true);
                 break;
             }
@@ -254,8 +258,8 @@ public class GameActivity extends AppCompatActivity {
 
     //---------Obstacles---------
     private void removeObstacles(boolean isCollided) {
-        for (int i = 0; i < values[4].length; i++) {
-            values[4][i] = 0;
+        for (int i = 0; i < values[5].length; i++) {
+            values[carRow -1][i] = 0;
         }
         if (!isCollided) {
             updateScore(1);
@@ -264,7 +268,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void generateObstacle() {
-        int colNum = columnRand.nextInt(3);
+        int colNum = columnRand.nextInt(5);
         if (clockCounter % 10 == 0) {// every 10 ticks generate wrench (+1 heart)
             values[0][colNum] = 3;
         } else if (clockCounter % 3 == 0) { // every 5 ticks generate coin
@@ -301,25 +305,33 @@ public class GameActivity extends AppCompatActivity {
                 values[i][j] = 0;
             }
         }
-        values[5][1] = 5; //Set car in the middle
+        values[values.length-1][2] = 5; //Set car in the middle
         lblScore.setText("0000");
         updateUI();
     }
 
-    private void findViews() {
+    /*
+    * if gameMode == 0 - button mode
+    * if gameMode == 1 - sensor mode
+    */
+    private void findViews(int gameMode) {
         gamePanel = new ImageView[][]{
-                {findViewById(R.id.panel_IMG_00), findViewById(R.id.panel_IMG_01), findViewById(R.id.panel_IMG_02)},
-                {findViewById(R.id.panel_IMG_10), findViewById(R.id.panel_IMG_11), findViewById(R.id.panel_IMG_12)},
-                {findViewById(R.id.panel_IMG_20), findViewById(R.id.panel_IMG_21), findViewById(R.id.panel_IMG_22)},
-                {findViewById(R.id.panel_IMG_30), findViewById(R.id.panel_IMG_31), findViewById(R.id.panel_IMG_32)},
-                {findViewById(R.id.panel_IMG_40), findViewById(R.id.panel_IMG_41), findViewById(R.id.panel_IMG_42)},
-                {findViewById(R.id.panel_IMG_car0), findViewById(R.id.panel_IMG_car1), findViewById(R.id.panel_IMG_car2)}
+                {findViewById(R.id.panel_IMG_00), findViewById(R.id.panel_IMG_01), findViewById(R.id.panel_IMG_02),findViewById(R.id.panel_IMG_03), findViewById(R.id.panel_IMG_04)},
+                {findViewById(R.id.panel_IMG_10), findViewById(R.id.panel_IMG_11), findViewById(R.id.panel_IMG_12),findViewById(R.id.panel_IMG_13), findViewById(R.id.panel_IMG_14)},
+                {findViewById(R.id.panel_IMG_20), findViewById(R.id.panel_IMG_21), findViewById(R.id.panel_IMG_22),findViewById(R.id.panel_IMG_23), findViewById(R.id.panel_IMG_24)},
+                {findViewById(R.id.panel_IMG_30), findViewById(R.id.panel_IMG_31), findViewById(R.id.panel_IMG_32),findViewById(R.id.panel_IMG_33), findViewById(R.id.panel_IMG_34)},
+                {findViewById(R.id.panel_IMG_40), findViewById(R.id.panel_IMG_41), findViewById(R.id.panel_IMG_42),findViewById(R.id.panel_IMG_43), findViewById(R.id.panel_IMG_44)},
+                {findViewById(R.id.panel_IMG_50), findViewById(R.id.panel_IMG_51), findViewById(R.id.panel_IMG_52),findViewById(R.id.panel_IMG_53), findViewById(R.id.panel_IMG_54)},
+                {findViewById(R.id.panel_IMG_60), findViewById(R.id.panel_IMG_61), findViewById(R.id.panel_IMG_62),findViewById(R.id.panel_IMG_63), findViewById(R.id.panel_IMG_64)},
+                {findViewById(R.id.panel_IMG_car0), findViewById(R.id.panel_IMG_car1), findViewById(R.id.panel_IMG_car2),findViewById(R.id.panel_IMG_car3), findViewById(R.id.panel_IMG_car4)}
         };
 
         values = new int[gamePanel.length][gamePanel[0].length];
 
-        btnRight = findViewById(R.id.panel_BTN_right);
-        btnLeft = findViewById(R.id.panel_BTN_left);
+        //if(gameMode == 0) {
+            btnRight = findViewById(R.id.panel_BTN_right);
+            btnLeft = findViewById(R.id.panel_BTN_left);
+        //}
 
         imgHeart1 = findViewById(R.id.panel_IMG_heart1);
         imgHeart2 = findViewById(R.id.panel_IMG_heart2);

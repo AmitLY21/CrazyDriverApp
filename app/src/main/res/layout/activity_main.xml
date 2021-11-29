@@ -76,6 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -83,6 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -90,6 +92,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_03"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_04"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
         </LinearLayout>
 
@@ -104,6 +122,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -111,6 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -118,6 +138,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
         </LinearLayout>
 
@@ -132,6 +168,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -139,6 +176,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -146,6 +184,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_23"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_24"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
         </LinearLayout>
 
@@ -160,6 +214,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -167,6 +222,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -174,6 +230,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_33"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_34"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
         </LinearLayout>
@@ -189,6 +261,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -196,6 +269,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:src="@drawable/img_hole" />
 
             <ImageView
@@ -203,9 +277,118 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_43"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_44"
+                android:layout_width="0dp"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/img_hole" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/panel_IMG_50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_51"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_52"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_53"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_54"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/panel_IMG_60"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_61"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_62"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+            <ImageView
+                android:id="@+id/panel_IMG_63"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+
+            <ImageView
+                android:id="@+id/panel_IMG_64"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:src="@drawable/img_hole" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/panel_Layout_Car_Row"
@@ -238,6 +421,28 @@
 
             <ImageView
                 android:id="@+id/panel_IMG_car2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/car"
+                android:visibility="visible">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/panel_IMG_car3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:src="@drawable/car"
+                android:visibility="visible">
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/panel_IMG_car4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
