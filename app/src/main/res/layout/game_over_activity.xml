@@ -2,38 +2,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    >
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/gameOverGif"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/giphy" />
-    <LinearLayout
-        android:id="@+id/panel_final_score"
+    android:background="@color/black">
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/gameOverGif">
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/start_game">
+
+    </ImageView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/panel_LBL_final_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttonPanel"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <TextView
-            android:id="@+id/panel_LBL_final_text"
-            android:layout_width="match_parent"
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Final Score: "
             android:fontFamily="@font/ferrari"
-            android:textColor="@color/white"
-            android:textSize="40sp">
-        </TextView>
+            android:text="TOP 10"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
 
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/frame_top10_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1"
+            android:background="#E8E6E6">
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        </View>
+
+        <FrameLayout
+            android:id="@+id/frame_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#B609FF">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <LinearLayout
+        android:id="@+id/buttonPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gameOverGif">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp">
 
         <Button
             android:id="@+id/panel_BTN_exit"
@@ -42,8 +79,8 @@
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:backgroundTint="@color/cardview_dark_background"
-            android:text="Exit"
             android:fontFamily="@font/ferrari"
+            android:text="Exit"
             android:textColor="@color/white"
             android:textSize="25sp">
 
@@ -56,8 +93,8 @@
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:backgroundTint="@color/cardview_dark_background"
-            android:text="Start Over"
             android:fontFamily="@font/ferrari"
+            android:text="Start Over"
             android:textColor="@color/white"
             android:textSize="25sp">
 

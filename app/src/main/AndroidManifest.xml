@@ -3,14 +3,24 @@
     package="com.example.crazydriver">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
-        android:icon="@drawable/car_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="Crazy Driver"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key"
+            />
+
         <activity
             android:name=".activities.StartGameActivity"
             android:exported="true">

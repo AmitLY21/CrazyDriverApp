@@ -12,6 +12,7 @@ import com.example.crazydriver.R;
 public class StartGameActivity extends AppCompatActivity {
 
     private Button btnStartGame;
+    private Button btnTop10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,15 @@ public class StartGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_game);
 
         findViews();
+
+        btnTop10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(new Intent(StartGameActivity.this,GameOverActivity.class));
+
+            }
+        });
 
         btnStartGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,5 +42,6 @@ public class StartGameActivity extends AppCompatActivity {
 
     private void findViews() {
         btnStartGame = findViewById(R.id.panel_BTN_startGame);
+        btnTop10 = findViewById(R.id.panel_BTN_top10);
     }
 }

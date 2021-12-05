@@ -42,5 +42,19 @@
 
     </Button>
 
+    <Button
+        android:id="@+id/panel_BTN_top10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/panel_BTN_startGame"
+        android:layout_centerInParent="true"
+        android:layout_margin = "20dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:fontFamily="@font/ferrari"
+        android:text="TOP 10"
+        android:textColor="@color/white"
+        android:textSize="28sp">
+    </Button>
+
 
 </RelativeLayout>

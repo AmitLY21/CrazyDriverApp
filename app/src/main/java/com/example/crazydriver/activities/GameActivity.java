@@ -1,58 +1,91 @@
 package com.example.crazydriver.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.crazydriver.Player;
 import com.example.crazydriver.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
+    private static final int REQUEST_LOCATION = 1;
+    final Handler handler = new Handler();
+    private final ArrayList<ImageView> hearts = new ArrayList<>(3);
+    private final Random obstacleRand = new Random();
+    private final Random columnRand = new Random();
+    int delay = 500; // 1000 milliseconds == 1 second
+    LocationManager locationManager;
+    String latitude, longitude;
     private Player player;
     private int car_id;
     private int gameMode;
-
+    private SensorManager sensorManager;
+    private Sensor accSensor;
     private ImageView[][] gamePanel;
     private int[][] values;
     private int carRow = 0;
+    /*
+     * Need to adjust the sensor movement
+     */
+    private final SensorEventListener accSensorEventListener = new SensorEventListener() {
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            DecimalFormat df = new DecimalFormat("##.##");
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            Log.d("sens", "onSensorChanged: " + "x: " + df.format(x) + " ,y: " + df.format(y) + " ,z: " + df.format(z));
+            if (x + 1 > 2.5)
+                moveLeft();
+            else if (x - 1 < -2.5)
+                moveRight();
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+        }
+    };
     private ImageButton btnLeft;
     private ImageButton btnRight;
-
-    private ArrayList<ImageView> hearts = new ArrayList<>(3);
     private ImageView imgHeart1;
     private ImageView imgHeart2;
     private ImageView imgHeart3;
-
-    private Random obstacleRand = new Random();
-    private Random columnRand = new Random();
-
     private TextView lblScore;
     private int score = 0;
-
     private MediaPlayer cityTrafficSound;
     private MediaPlayer carCrashSound;
     private MediaPlayer wrenchSound;
     private MediaPlayer coinCollectSound;
-
-    int delay = 500; // 1000 milliseconds == 1 second
     private int clockCounter = 0;
-    final Handler handler = new Handler();
-
-
     /**
      * the clock of the game , every tick we move obstacles and checks
      * whether the player got hit or not by the obstacles
@@ -84,19 +117,35 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Bundle extras = getIntent().getExtras();
-        car_id = extras.getInt("carImage");
-        gameMode = extras.getInt("gameMode");
+        if(extras != null){
+            car_id = extras.getInt("carImage");
+            gameMode = extras.getInt("gameMode");
+            playBackgroundMusic();
+        }
 
         findViews(gameMode);
         gamePanelReset();
-        carRow =  values.length -1;
-
+        carRow = values.length - 1;
         player = new Player();
 
-        cityTrafficSound = MediaPlayer.create(GameActivity.this, R.raw.city_traffic);
-        cityTrafficSound.setLooping(true);
-        cityTrafficSound.setVolume(.5f, .5f);
-        cityTrafficSound.start();
+        if (gameMode == 1) {
+            initSensor();
+            btnLeft.setClickable(false);
+            btnRight.setClickable(false);
+            btnLeft.setVisibility(View.INVISIBLE);
+            btnRight.setVisibility(View.INVISIBLE);
+        }
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            OnGPS();
+        } else {
+            getLocation();
+        }
+        playBackgroundMusic();
 
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,13 +162,61 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    private void playBackgroundMusic() {
+        cityTrafficSound = MediaPlayer.create(GameActivity.this, R.raw.city_traffic);
+        cityTrafficSound.setLooping(true);
+        cityTrafficSound.setVolume(0.7f , 0.7f);
+        cityTrafficSound.start();
+    }
+
+    //---------Location----------
+    private void OnGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                GameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                GameActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (locationGPS != null) {
+                double lat = locationGPS.getLatitude();
+                double longi = locationGPS.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
+            } else {
+                Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //---------Sensors----------
+    private void initSensor() {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    }
+
     //---------Movement---------
     private void moveLeft() {
         if (player.getCurrentPosition() - 1 >= 0) {
             int lastPosition = player.getCurrentPosition();
             player.setCurrentPosition(player.getCurrentPosition() - 1);
             int newPosition = player.getCurrentPosition();
-
             switchPlayerPosition(lastPosition, newPosition);
         }
     }
@@ -158,6 +255,8 @@ public class GameActivity extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(GameActivity.this, GameOverActivity.class);
         //Passing the score value to the game over activity
         switchActivityIntent.putExtra("finalScore", String.valueOf(score));
+        switchActivityIntent.putExtra("lat", Double.valueOf(latitude));
+        switchActivityIntent.putExtra("lon", Double.valueOf(longitude));
         finish();
         startActivity(switchActivityIntent);
     }
@@ -220,25 +319,25 @@ public class GameActivity extends AppCompatActivity {
      */
     private void checkCollision() {
         for (int i = 0; i < values[carRow].length; i++) {
-            if (values[carRow][i] == 5 && values[carRow-1][i] == 3) { //HIT Wrench (extra life)
+            if (values[carRow][i] == 5 && values[carRow - 1][i] == 3) { //HIT Wrench (extra life)
                 addLive();
                 wrenchSound = MediaPlayer.create(GameActivity.this, R.raw.wrench_sound);
                 wrenchSound.start();
                 removeObstacles(true);
                 break;
             }
-            if (values[carRow][i] == 5 && values[carRow-1][i] == 4) { //HIT coin (score+1)
+            if (values[carRow][i] == 5 && values[carRow - 1][i] == 4) { //HIT coin (score+1)
                 removeObstacles(false);
                 Toast.makeText(this, "+1 Score", Toast.LENGTH_SHORT).show();
                 coinCollectSound = MediaPlayer.create(GameActivity.this, R.raw.coin_collect);
                 coinCollectSound.start();
                 break;
             }
-            if (values[carRow][i] == 5 && values[carRow-1][i] == 1) { //HIT Obstacle hole
+            if (values[carRow][i] == 5 && values[carRow - 1][i] == 1) { //HIT Obstacle hole
                 collisionActions(true);
                 break;
             }
-            if (values[carRow][i] == 5 && values[carRow-1][i] == 2) { //HIT Obstacle barrier
+            if (values[carRow][i] == 5 && values[carRow - 1][i] == 2) { //HIT Obstacle barrier
                 collisionActions(true);
                 break;
             }
@@ -259,7 +358,7 @@ public class GameActivity extends AppCompatActivity {
     //---------Obstacles---------
     private void removeObstacles(boolean isCollided) {
         for (int i = 0; i < values[5].length; i++) {
-            values[carRow -1][i] = 0;
+            values[carRow - 1][i] = 0;
         }
         if (!isCollided) {
             updateScore(1);
@@ -305,32 +404,32 @@ public class GameActivity extends AppCompatActivity {
                 values[i][j] = 0;
             }
         }
-        values[values.length-1][2] = 5; //Set car in the middle
+        values[values.length - 1][2] = 5; //Set car in the middle
         lblScore.setText("0000");
         updateUI();
     }
 
     /*
-    * if gameMode == 0 - button mode
-    * if gameMode == 1 - sensor mode
-    */
+     * if gameMode == 0 - button mode
+     * if gameMode == 1 - sensor mode
+     */
     private void findViews(int gameMode) {
         gamePanel = new ImageView[][]{
-                {findViewById(R.id.panel_IMG_00), findViewById(R.id.panel_IMG_01), findViewById(R.id.panel_IMG_02),findViewById(R.id.panel_IMG_03), findViewById(R.id.panel_IMG_04)},
-                {findViewById(R.id.panel_IMG_10), findViewById(R.id.panel_IMG_11), findViewById(R.id.panel_IMG_12),findViewById(R.id.panel_IMG_13), findViewById(R.id.panel_IMG_14)},
-                {findViewById(R.id.panel_IMG_20), findViewById(R.id.panel_IMG_21), findViewById(R.id.panel_IMG_22),findViewById(R.id.panel_IMG_23), findViewById(R.id.panel_IMG_24)},
-                {findViewById(R.id.panel_IMG_30), findViewById(R.id.panel_IMG_31), findViewById(R.id.panel_IMG_32),findViewById(R.id.panel_IMG_33), findViewById(R.id.panel_IMG_34)},
-                {findViewById(R.id.panel_IMG_40), findViewById(R.id.panel_IMG_41), findViewById(R.id.panel_IMG_42),findViewById(R.id.panel_IMG_43), findViewById(R.id.panel_IMG_44)},
-                {findViewById(R.id.panel_IMG_50), findViewById(R.id.panel_IMG_51), findViewById(R.id.panel_IMG_52),findViewById(R.id.panel_IMG_53), findViewById(R.id.panel_IMG_54)},
-                {findViewById(R.id.panel_IMG_60), findViewById(R.id.panel_IMG_61), findViewById(R.id.panel_IMG_62),findViewById(R.id.panel_IMG_63), findViewById(R.id.panel_IMG_64)},
-                {findViewById(R.id.panel_IMG_car0), findViewById(R.id.panel_IMG_car1), findViewById(R.id.panel_IMG_car2),findViewById(R.id.panel_IMG_car3), findViewById(R.id.panel_IMG_car4)}
+                {findViewById(R.id.panel_IMG_00), findViewById(R.id.panel_IMG_01), findViewById(R.id.panel_IMG_02), findViewById(R.id.panel_IMG_03), findViewById(R.id.panel_IMG_04)},
+                {findViewById(R.id.panel_IMG_10), findViewById(R.id.panel_IMG_11), findViewById(R.id.panel_IMG_12), findViewById(R.id.panel_IMG_13), findViewById(R.id.panel_IMG_14)},
+                {findViewById(R.id.panel_IMG_20), findViewById(R.id.panel_IMG_21), findViewById(R.id.panel_IMG_22), findViewById(R.id.panel_IMG_23), findViewById(R.id.panel_IMG_24)},
+                {findViewById(R.id.panel_IMG_30), findViewById(R.id.panel_IMG_31), findViewById(R.id.panel_IMG_32), findViewById(R.id.panel_IMG_33), findViewById(R.id.panel_IMG_34)},
+                {findViewById(R.id.panel_IMG_40), findViewById(R.id.panel_IMG_41), findViewById(R.id.panel_IMG_42), findViewById(R.id.panel_IMG_43), findViewById(R.id.panel_IMG_44)},
+                {findViewById(R.id.panel_IMG_50), findViewById(R.id.panel_IMG_51), findViewById(R.id.panel_IMG_52), findViewById(R.id.panel_IMG_53), findViewById(R.id.panel_IMG_54)},
+                {findViewById(R.id.panel_IMG_60), findViewById(R.id.panel_IMG_61), findViewById(R.id.panel_IMG_62), findViewById(R.id.panel_IMG_63), findViewById(R.id.panel_IMG_64)},
+                {findViewById(R.id.panel_IMG_car0), findViewById(R.id.panel_IMG_car1), findViewById(R.id.panel_IMG_car2), findViewById(R.id.panel_IMG_car3), findViewById(R.id.panel_IMG_car4)}
         };
 
         values = new int[gamePanel.length][gamePanel[0].length];
 
         //if(gameMode == 0) {
-            btnRight = findViewById(R.id.panel_BTN_right);
-            btnLeft = findViewById(R.id.panel_BTN_left);
+        btnRight = findViewById(R.id.panel_BTN_right);
+        btnLeft = findViewById(R.id.panel_BTN_left);
         //}
 
         imgHeart1 = findViewById(R.id.panel_IMG_heart1);
@@ -367,6 +466,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (gameMode == 1)
+            sensorManager.registerListener(accSensorEventListener, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
         cityTrafficSound.start();
     }
 
@@ -379,6 +480,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (gameMode == 1)
+            sensorManager.unregisterListener(accSensorEventListener);
         cityTrafficSound.stop();
     }
 
