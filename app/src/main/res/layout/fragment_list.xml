@@ -14,6 +14,8 @@
 
         <ListView
             android:id="@+id/panel_list_top10"
+            android:divider="#979797"
+            android:dividerHeight="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

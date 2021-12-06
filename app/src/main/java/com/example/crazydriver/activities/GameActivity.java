@@ -35,45 +35,29 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
-
     private static final int REQUEST_LOCATION = 1;
     final Handler handler = new Handler();
+
     private final ArrayList<ImageView> hearts = new ArrayList<>(3);
     private final Random obstacleRand = new Random();
     private final Random columnRand = new Random();
     int delay = 500; // 1000 milliseconds == 1 second
+    private int clockCounter = 0;
+
     LocationManager locationManager;
     String latitude, longitude;
+
     private Player player;
     private int car_id;
     private int gameMode;
+
     private SensorManager sensorManager;
     private Sensor accSensor;
+
     private ImageView[][] gamePanel;
     private int[][] values;
     private int carRow = 0;
-    /*
-     * Need to adjust the sensor movement
-     */
-    private final SensorEventListener accSensorEventListener = new SensorEventListener() {
 
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            DecimalFormat df = new DecimalFormat("##.##");
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            Log.d("sens", "onSensorChanged: " + "x: " + df.format(x) + " ,y: " + df.format(y) + " ,z: " + df.format(z));
-            if (x + 1 > 2.5)
-                moveLeft();
-            else if (x - 1 < -2.5)
-                moveRight();
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {
-        }
-    };
     private ImageButton btnLeft;
     private ImageButton btnRight;
     private ImageView imgHeart1;
@@ -81,11 +65,12 @@ public class GameActivity extends AppCompatActivity {
     private ImageView imgHeart3;
     private TextView lblScore;
     private int score = 0;
+
     private MediaPlayer cityTrafficSound;
     private MediaPlayer carCrashSound;
     private MediaPlayer wrenchSound;
     private MediaPlayer coinCollectSound;
-    private int clockCounter = 0;
+
     /**
      * the clock of the game , every tick we move obstacles and checks
      * whether the player got hit or not by the obstacles
@@ -210,6 +195,29 @@ public class GameActivity extends AppCompatActivity {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
+
+    /*
+     * Need to adjust the sensor movement
+     */
+    private final SensorEventListener accSensorEventListener = new SensorEventListener() {
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            DecimalFormat df = new DecimalFormat("##.##");
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            Log.d("sens", "onSensorChanged: " + "x: " + df.format(x) + " ,y: " + df.format(y) + " ,z: " + df.format(z));
+            if (x + 1 > 2.5)
+                moveLeft();
+            else if (x - 1 < -2.5)
+                moveRight();
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+        }
+    };
 
     //---------Movement---------
     private void moveLeft() {

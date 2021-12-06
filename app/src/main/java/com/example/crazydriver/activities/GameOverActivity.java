@@ -28,6 +28,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class GameOverActivity extends AppCompatActivity {
@@ -124,6 +125,7 @@ public class GameOverActivity extends AppCompatActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(googleMap -> {
             LatLng latLng = new LatLng(lat, lon);
+            googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(latLng).title("Played Here!"));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15), 5000, null);
         });

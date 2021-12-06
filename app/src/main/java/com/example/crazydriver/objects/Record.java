@@ -21,8 +21,8 @@ public class Record {
     @Override
     public String toString() {
         return "Time: " + time +
-                "  ,Score:" + score +
-                " [ " + lat +
+                "\nScore:" + score +
+                "           [ " + lat +
                 ", " + lon + " ]";
     }
 
