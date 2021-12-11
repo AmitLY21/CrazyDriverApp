@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class GameOverActivity extends AppCompatActivity {
@@ -56,12 +56,16 @@ public class GameOverActivity extends AppCompatActivity {
 
         //load
         loadFromSP();
+        if (myDB == null) {
+            generateDefaultRecords();
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             score = extras.getString("finalScore");
             latLon[0] = extras.getDouble("lat");
             latLon[1] = extras.getDouble("lon");
+            Toast.makeText(this, "Your Final Score is: " + score, Toast.LENGTH_SHORT).show();
             myDB.getRecords().add(getNewRecord());
         }
 
@@ -83,6 +87,15 @@ public class GameOverActivity extends AppCompatActivity {
                 startActivity(new Intent(GameOverActivity.this, StartGameActivity.class));
             }
         });
+    }
+
+    private void generateDefaultRecords() {
+        ArrayList<Record> defaultRec = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            defaultRec.add(new Record().setTime("99:9" + i).setScore(-1).setLon(0).setLon(0));
+        }
+        myDB = new MyDB();
+        myDB.setRecords(defaultRec);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -112,8 +125,10 @@ public class GameOverActivity extends AppCompatActivity {
     private MyDB pickTop10FromDB() {
         ArrayList<Record> res = new ArrayList<>();
         int counter = 0;
-        while (res.size() < 10) {
-            res.add(myDB.getRecords().get(counter));
+        while (res.size() < 10 && counter < myDB.getRecords().size()) {
+            if (myDB.getRecords().get(counter).getScore() != -1) {
+                res.add(myDB.getRecords().get(counter));
+            }
             counter++;
         }
         return myDB.setRecords(res);

@@ -52,5 +52,6 @@ public class Record {
         this.lon = lon;
         return this;
     }
+
 }
 

@@ -45,7 +45,8 @@ public class GameActivity extends AppCompatActivity {
     private int clockCounter = 0;
 
     LocationManager locationManager;
-    String latitude, longitude;
+    String latitude = "0.0";
+    String longitude = "0.0";
 
     private Player player;
     private int car_id;
